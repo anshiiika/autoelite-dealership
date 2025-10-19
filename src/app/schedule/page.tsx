@@ -1,10 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { CalendarIcon, MapPinIcon, CarIcon } from "lucide-react";
 
 export default function Schedule() {
-  const router = useRouter();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -55,7 +53,7 @@ export default function Schedule() {
             )
           : [];
         setModels(names);
-      } catch (err) {
+      } catch {
         setModels([]);
       } finally {
         setLoadingModels(false);
@@ -78,7 +76,7 @@ export default function Schedule() {
           ? data.countries
           : [];
         setCountries(list);
-      } catch (err) {
+      } catch {
         setCountries(["India"]);
       } finally {
         setLoadingCountries(false);
@@ -106,7 +104,7 @@ export default function Schedule() {
         const data = await res.json();
         const list: string[] = Array.isArray(data?.states) ? data.states : [];
         setStates(list);
-      } catch (err) {
+      } catch {
         if (formData.country === "India") {
           setStates([
             "Maharashtra",
@@ -146,7 +144,7 @@ export default function Schedule() {
         const data = await res.json();
         const list: string[] = Array.isArray(data?.cities) ? data.cities : [];
         setCities(list);
-      } catch (err) {
+      } catch {
         if (formData.country === "India") {
           // Safe defaults
           setCities([
@@ -171,7 +169,7 @@ export default function Schedule() {
     fetchCities();
   }, [formData.country, formData.state]);
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -203,7 +201,7 @@ export default function Schedule() {
     return null;
   };
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const validationError = validateForm();
     if (validationError) {
@@ -260,7 +258,7 @@ export default function Schedule() {
             Book a Premium Test Drive
           </h1>
           <p className="text-center text-gray-300 mb-8">
-            Choose your model and preferred dealership location. We'll confirm
+            Choose your model and preferred dealership location. We&apos;ll confirm
             instantly.
           </p>
 

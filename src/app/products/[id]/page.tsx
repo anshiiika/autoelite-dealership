@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 // Define a type for the car data
 interface Car {
@@ -224,10 +225,11 @@ export default function Products() {
                 className="bg-white/10 backdrop-blur-xl border border-white/10 rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 hover:scale-105"
               >
                 <div className="relative h-48 bg-gray-200">
-                  <img
+                  <Image
                     src={car.image || "/placeholder.jpg"}
                     alt={`${car.brand} ${car.model}`}
-                    className="w-full h-full object-cover"
+                    fill
+                    className="object-cover"
                   />
                   <div className="absolute top-0 right-0 m-2 px-2 py-1 bg-blue-600 text-white text-xs font-bold rounded-lg">
                     {car.year}

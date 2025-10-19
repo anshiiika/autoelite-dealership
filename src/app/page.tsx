@@ -1,7 +1,5 @@
 "use client";
 import Image from "next/image";
-import { Greet } from "./components/greet";
-import { Counter } from "./components/counter";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
