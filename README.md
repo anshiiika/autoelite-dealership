@@ -247,8 +247,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Anshika Shukla**
 
-- GitHub: [@anshikashukla](https://github.com/anshikashukla)
-- LinkedIn: [Anshika Shukla](https://linkedin.com/in/anshikashukla)
+- GitHub: [@anshiiika](https://github.com/anshiiika)
 
 ## 🙏 Acknowledgments
 
