@@ -29,7 +29,10 @@ export default function Schedule() {
     | { status: "success"; bookingId: string }
     | { status: "error"; message: string }
   >({ status: "idle" });
-
+  interface Car {
+    brand?: string;
+    model?: string;
+  }
   useEffect(() => {
     const fetchModels = async () => {
       setLoadingModels(true);
@@ -45,7 +48,8 @@ export default function Schedule() {
           ? Array.from(
               new Set(
                 cars
-                  .map((c: any) =>
+
+                  .map((c: Car) =>
                     c?.brand && c?.model ? `${c.brand} ${c.model}` : null
                   )
                   .filter((v: string | null): v is string => Boolean(v))
@@ -169,7 +173,9 @@ export default function Schedule() {
     fetchCities();
   }, [formData.country, formData.state]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -241,11 +247,10 @@ export default function Schedule() {
         date: "",
         time: "",
       });
-    } catch (err: any) {
-      setSubmitState({
-        status: "error",
-        message: err?.message || "Something went wrong",
-      });
+    } catch (err: unknown) {
+      const message =
+        err instanceof Error ? err.message : "Something went wrong";
+      setSubmitState({ status: "error", message });
     }
   };
 
@@ -258,8 +263,8 @@ export default function Schedule() {
             Book a Premium Test Drive
           </h1>
           <p className="text-center text-gray-300 mb-8">
-            Choose your model and preferred dealership location. We&apos;ll confirm
-            instantly.
+            Choose your model and preferred dealership location. We&apos;ll
+            confirm instantly.
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-6">

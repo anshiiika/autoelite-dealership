@@ -1,14 +1,16 @@
 import { NextResponse } from "next/server";
 
 // Basic in-memory cache keyed by a simple string
-const cache = new Map<string, { data: any; fetchedAt: number }>();
+
+const cache = new Map<string, { data: unknown; fetchedAt: number }>();
+
 const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 
-async function fetchWithCache(key: string, fetcher: () => Promise<any>) {
+async function fetchWithCache<T>(key: string, fetcher: () => Promise<T>): Promise<T> {
   const now = Date.now();
   const cached = cache.get(key);
   if (cached && now - cached.fetchedAt < ONE_DAY_MS) {
-    return cached.data;
+    return cached.data as T;
   }
   const data = await fetcher();
   cache.set(key, { data, fetchedAt: now });
@@ -29,7 +31,7 @@ export async function GET(req: Request) {
         const json = await resp.json();
         const list = Array.isArray(json?.data)
           ? json.data
-            .map((c: any) => (typeof c?.name === "string" ? c.name.trim() : ""))
+            .map((c: { name?: string }) => (typeof c?.name === "string" ? c.name.trim() : ""))
             .filter((n: string) => n.length > 0)
             .sort((a: string, b: string) => a.localeCompare(b))
           : [];
@@ -52,7 +54,7 @@ export async function GET(req: Request) {
         const json = await resp.json();
         const states = Array.isArray(json?.data?.states)
           ? json.data.states
-            .map((s: any) => (typeof s?.name === "string" ? s.name.trim() : ""))
+            .map((s: { name?: string }) => (typeof s?.name === "string" ? s.name.trim() : ""))
             .filter((n: string) => n.length > 0)
             .sort((a: string, b: string) => a.localeCompare(b))
           : [];
@@ -76,7 +78,7 @@ export async function GET(req: Request) {
         const json = await resp.json();
         const cities = Array.isArray(json?.data)
           ? json.data
-            .map((c: any) => (typeof c === "string" ? c.trim() : ""))
+            .map((c: string) => (typeof c === "string" ? c.trim() : ""))
             .filter((n: string) => n.length > 0)
             .sort((a: string, b: string) => a.localeCompare(b))
           : [];
@@ -86,11 +88,9 @@ export async function GET(req: Request) {
     }
 
     return NextResponse.json({ error: "Invalid level" }, { status: 400 });
-  } catch (error: any) {
-    return NextResponse.json(
-      { error: error?.message || "Unable to fetch locations" },
-      { status: 500 }
-    );
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : "Unable to fetch locations";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 
