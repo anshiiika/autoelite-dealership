@@ -2,7 +2,7 @@
 
 A modern, full-featured car dealership website built with Next.js 15, featuring a premium glassmorphism design, dynamic car catalog, test drive booking system, and car comparison functionality.
 
-![AutoElite Preview](https://autoelite-dealership-sz1e.vercel.app/)
+![AutoElite Preview] https://autoelite-dealership-sz1e.vercel.app/
 
 ## ✨ Features
 
